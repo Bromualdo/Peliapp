@@ -1,7 +1,8 @@
 import { Box,FormControl,Input,  FormLabel,    FormErrorMessage,    FormHelperText, Image, keyframes} from '@chakra-ui/react'
-import { useContext, useState } from 'react'
+import { useContext, useState,useEffect} from 'react'
 import { MovieContext } from './Contexts/MovieContext'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const animationKeyFrames= keyframes`
 0%{transform: rotate(15deg);}
@@ -16,6 +17,12 @@ export const Searchbar = () => {
   
 const [search,setSearch] = useState('')
 const {setMovie,movie} =useContext(MovieContext)
+
+useEffect(() => {
+  if(movie.length>0)
+    console.log('cambie');
+}, [movie])
+
 
 const Pelifetch = async ()=>{
       try{
@@ -39,23 +46,22 @@ const handleSubmit = (e)=>{
 
   return (
     <>      
-      {movie.length==0 && (
+      
         <Box filter="auto"
         border
         blur="0px">
         <form onSubmit={handleSubmit} >
         <FormControl display="flex" alignSelf="flex-end" flexDirection="column">
         <FormLabel color="white" >Ingrese una Pelicula</FormLabel>      
-        
+        <Link to='/'> 
         <Input  w="500px" value={search} onChange={changeFilm} fontFamily="'Roboto', sans-serif"  backgroundColor="white" border _focus={{borderColor:"yellow",boxShadow:`1.5px 1.5px yellow`}}/>
+        </Link>
         
         <FormHelperText display="flex" color="white" alignItems="center" justifyContent="flex-end" >... y presiona <Image as={motion.img} animation={animation} marginLeft="5px"src="https://cdn.discordapp.com/attachments/1146933013582712942/1159167191871127612/enter.png?ex=651ee612&is=651d9492&hm=927bb561bbe2c882b03158838dae940f16d0f41f9c214608fbbab8a3b9417d61&" maxH="30px"/> </FormHelperText>
         </FormControl>
         </form>
-        </Box>
-        
-    )
-      }
+        </Box>        
+    
     </>
   )
 }
